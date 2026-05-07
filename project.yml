@@ -1,0 +1,33 @@
+name: Piano
+options:
+  deploymentTarget:
+    iOS: "17.0"
+  bundleIdPrefix: com.chinghssu
+  xcodeVersion: "16.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    TARGETED_DEVICE_FAMILY: "1"
+targets:
+  Piano:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Piano
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.chinghssu.piano
+        INFOPLIST_FILE: Piano/Info.plist
+    info:
+      path: Piano/Info.plist
+      properties:
+        CFBundleDisplayName: Piano
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSMicrophoneUsageDescription: 錄製您的演奏
+        NSMotionUsageDescription: 偵測敲擊力道，以調整音量強弱
+        UIRequiresFullScreen: true
+        UIStatusBarHidden: false
