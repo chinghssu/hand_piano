@@ -1,31 +1,40 @@
 import SwiftUI
 
 struct PianoView: View {
-    @State private var viewModel = PianoViewModel()
+    @StateObject private var viewModel = PianoViewModel()
     @State private var padStates: [PadState] = Array(repeating: PadState(), count: 10)
     @State private var padCenters: [CGPoint] = []
     @State private var padRadius: CGFloat = 44
+    @State private var isEditMode = false
+    @State private var isSustainOn = false
 
     struct PadState {
         var isPressed = false
         var bendSemitones = 0.0
     }
 
-    private let hPad: CGFloat = 24
-    private let spacing: CGFloat = 14
+    private let hPad: CGFloat = 16
+    private let spacing: CGFloat = 10
+    private let positionsKey = "padPositions"
 
     var body: some View {
         GeometryReader { geo in
             ZStack {
                 Color(red: 0.06, green: 0.06, blue: 0.10).ignoresSafeArea()
 
-                padLayer(geo: geo).allowsHitTesting(false)
+                padLayer(geo: geo)
+                    .allowsHitTesting(isEditMode)
 
-                touchLayer
-                    .frame(width: geo.size.width, height: geo.size.height)
+                if !isEditMode {
+                    touchLayer
+                        .frame(width: geo.size.width, height: geo.size.height)
+                }
+
+                controlsOverlay
             }
             .onAppear { updateLayout(geo: geo) }
-            .onChange(of: geo.size) { updateLayout(geo: geo) }
+            .onChange(of: geo.size) { _ in updateLayout(geo: geo) }
+            .onChange(of: isSustainOn) { newVal in viewModel.setSustain(newVal) }
         }
     }
 
@@ -38,10 +47,22 @@ struct PianoView: View {
                     PadView(
                         pad: viewModel.pads[i],
                         isPressed: padStates[i].isPressed,
-                        bendSemitones: padStates[i].bendSemitones
+                        bendSemitones: padStates[i].bendSemitones,
+                        isEditMode: isEditMode
                     )
                     .frame(width: padRadius * 2, height: padRadius * 2)
                     .position(padCenters[i])
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                guard isEditMode else { return }
+                                padCenters[i] = value.location
+                            }
+                            .onEnded { _ in
+                                guard isEditMode else { return }
+                                savePositions(geo: geo)
+                            }
+                    )
                 }
             }
         }
@@ -58,8 +79,8 @@ struct PianoView: View {
                 padStates[index].isPressed = true
                 padStates[index].bendSemitones = 0
                 viewModel.touchBegan(on: viewModel.pads[index],
-                                     velocity: velocityFrom(radius: majorRadius),
-                                     touchId: touchId)
+                                     touchId: touchId,
+                                     majorRadius: majorRadius)
             },
             onMoved: { index, touchId, current, origin in
                 guard index < padStates.count else { return }
@@ -77,33 +98,85 @@ struct PianoView: View {
         )
     }
 
+    // MARK: - Controls
+
+    private var controlsOverlay: some View {
+        VStack {
+            HStack {
+                Button(action: { isSustainOn.toggle() }) {
+                    Text(isSustainOn ? "延音 ON" : "延音")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(isSustainOn ? .black : .white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(isSustainOn ? Color.white : Color.white.opacity(0.15))
+                        .clipShape(Capsule())
+                }
+                Spacer()
+                Button(action: { isEditMode.toggle() }) {
+                    Text(isEditMode ? "完成" : "編輯")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(isEditMode ? .black : .white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(isEditMode ? Color.yellow : Color.white.opacity(0.15))
+                        .clipShape(Capsule())
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 16)
+            Spacer()
+        }
+    }
+
     // MARK: - Layout
 
     private func updateLayout(geo: GeometryProxy) {
-        let n = CGFloat(viewModel.pads.count)
+        let perRow = 5
+        let n = CGFloat(perRow)
         let usable = geo.size.width - hPad * 2 - spacing * (n - 1)
-        let diameter = min(usable / n, geo.size.height * 0.72)
-        let r = diameter / 2
-        let totalW = diameter * n + spacing * (n - 1)
-        let startX = (geo.size.width - totalW) / 2 + r
-        let cy = geo.size.height / 2
+        let side = min(usable / n, geo.size.height * 0.38)
 
-        padRadius = r
-        padCenters = viewModel.pads.indices.map { i in
-            CGPoint(x: startX + CGFloat(i) * (diameter + spacing), y: cy)
+        padRadius = side / 2
+
+        if let saved = loadPositions(geo: geo) {
+            padCenters = saved
+        } else {
+            padCenters = defaultCenters(geo: geo, side: side)
         }
+
         if padStates.count != viewModel.pads.count {
             padStates = Array(repeating: PadState(), count: viewModel.pads.count)
         }
     }
 
-    // MARK: - Velocity
+    private func defaultCenters(geo: GeometryProxy, side: CGFloat) -> [CGPoint] {
+        let perRow = 5
+        let n = CGFloat(perRow)
+        let totalW = side * n + spacing * (n - 1)
+        let startX = (geo.size.width - totalW) / 2 + side / 2
+        let row1Y = geo.size.height * 0.32
+        let row2Y = row1Y + side + 16
 
-    // Phase 1: radius-only. Phase 2 will add accelerometer (A source).
-    private func velocityFrom(radius: CGFloat) -> UInt8 {
-        let r = Double(radius)
-        let clamped = max(10.0, min(45.0, r))
-        let v = 30.0 + (clamped - 10.0) / 35.0 * 80.0
-        return UInt8(v)
+        return viewModel.pads.indices.map { i in
+            let col = i % perRow
+            let row = i / perRow
+            let x = startX + CGFloat(col) * (side + spacing)
+            let y = row == 0 ? row1Y : row2Y
+            return CGPoint(x: x, y: y)
+        }
+    }
+
+    // MARK: - Persistence
+
+    private func savePositions(geo: GeometryProxy) {
+        let normalized = padCenters.map { [$0.x / geo.size.width, $0.y / geo.size.height] }
+        UserDefaults.standard.set(normalized, forKey: positionsKey)
+    }
+
+    private func loadPositions(geo: GeometryProxy) -> [CGPoint]? {
+        guard let data = UserDefaults.standard.array(forKey: positionsKey) as? [[Double]],
+              data.count == viewModel.pads.count else { return nil }
+        return data.map { CGPoint(x: $0[0] * geo.size.width, y: $0[1] * geo.size.height) }
     }
 }

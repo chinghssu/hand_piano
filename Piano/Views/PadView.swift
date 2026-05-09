@@ -4,21 +4,33 @@ struct PadView: View {
     let pad: Pad
     var isPressed: Bool = false
     var bendSemitones: Double = 0.0
+    var isEditMode: Bool = false
 
     private var padColor: Color { pad.colorComponents.color }
 
     var body: some View {
         ZStack {
-            Circle()
+            RoundedRectangle(cornerRadius: 12)
                 .fill(padColor.opacity(isPressed ? 1.0 : 0.55))
-                .overlay(Circle().strokeBorder(Color.white.opacity(0.25), lineWidth: 1.5))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12).strokeBorder(
+                        isEditMode ? Color.yellow.opacity(0.8) : Color.white.opacity(0.25),
+                        lineWidth: isEditMode ? 2 : 1.5
+                    )
+                )
                 .shadow(color: padColor.opacity(isPressed ? 0.85 : 0.2),
                         radius: isPressed ? 22 : 6)
-                .scaleEffect(isPressed ? 1.10 : 1.0)
+                .scaleEffect(isPressed ? 1.05 : 1.0)
                 .animation(.spring(duration: 0.08, bounce: 0.3), value: isPressed)
 
             VStack(spacing: 3) {
-                bendIndicator
+                if isEditMode {
+                    Image(systemName: "move.3d")
+                        .font(.system(size: 10))
+                        .foregroundStyle(.yellow.opacity(0.8))
+                } else {
+                    bendIndicator
+                }
                 Text(pad.label)
                     .font(.system(size: 17, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)

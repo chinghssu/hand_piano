@@ -10,19 +10,27 @@
 		0B15706CEE2B5463CB803F61 /* PianoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B4A58452A757CEB9404849 /* PianoView.swift */; };
 		3B759AB4CFB1A94749592B54 /* PianoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2FFB256AFB4EB19129A93 /* PianoApp.swift */; };
 		537685112A54AD51BD393E80 /* PianoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FFA2AE2C803C99EF7F4CF4 /* PianoViewModel.swift */; };
+		798896CD2FAF6F4F006EC547 /* SamplerAudioEngine 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798896CC2FAF6F4F006EC547 /* SamplerAudioEngine 2.swift */; };
 		79DA514E46683AE275A60102 /* PianoAudioProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE73E660519319B2B9062E7 /* PianoAudioProtocol.swift */; };
 		A37668B4AAE4919829F4732D /* SineAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F002B5089588938A7DF0BAA /* SineAudioEngine.swift */; };
+		AD11AAAA11AAAA11AAAA1101 /* VelocityDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11AAAA11AAAA11AAAA1100 /* VelocityDetector.swift */; };
+		BE22BBBB22BBBB22BBBB2201 /* HapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE22BBBB22BBBB22BBBB2200 /* HapticEngine.swift */; };
+		A9B3C7D1E5F2A0B1C2D3E4F5 /* GeneralUser_GS.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = B8C4D2E6F3A8B0C1D2E3F4A5 /* GeneralUser_GS.sf2 */; };
 		B3192BD83F3E04934F783678 /* TouchOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB88A11DF1D88BB77CB48F0 /* TouchOverlayView.swift */; };
 		BFB6A329350569B8A140661A /* PadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C01E27415DFB577E66089A /* PadView.swift */; };
 		CB6540D7E1F8D0196F62D540 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4B2B0C609B47D04DBB2B5 /* Pad.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		186DFDCF8B9E9349878A4238 /* Piano.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Piano.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		186DFDCF8B9E9349878A4238 /* Piano.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Piano.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8C4D2E6F3A8B0C1D2E3F4A5 /* GeneralUser_GS.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = GeneralUser_GS.sf2; path = Resources/GeneralUser_GS.sf2; sourceTree = SOURCE_ROOT; };
 		48DC15FF7B7E05A174970994 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		62E2FFB256AFB4EB19129A93 /* PianoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoApp.swift; sourceTree = "<group>"; };
 		65B4A58452A757CEB9404849 /* PianoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoView.swift; sourceTree = "<group>"; };
+		798896CC2FAF6F4F006EC547 /* SamplerAudioEngine 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SamplerAudioEngine 2.swift"; sourceTree = "<group>"; };
 		8F002B5089588938A7DF0BAA /* SineAudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SineAudioEngine.swift; sourceTree = "<group>"; };
+		AD11AAAA11AAAA11AAAA1100 /* VelocityDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VelocityDetector.swift; sourceTree = "<group>"; };
+		BE22BBBB22BBBB22BBBB2200 /* HapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticEngine.swift; sourceTree = "<group>"; };
 		9EB88A11DF1D88BB77CB48F0 /* TouchOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchOverlayView.swift; sourceTree = "<group>"; };
 		D9C01E27415DFB577E66089A /* PadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadView.swift; sourceTree = "<group>"; };
 		F5B4B2B0C609B47D04DBB2B5 /* Pad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
@@ -30,12 +38,23 @@
 		FCE73E660519319B2B9062E7 /* PianoAudioProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoAudioProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		798896CF2FAF6FD9006EC547 /* Resources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXGroup section */
 		2FE20D051DE8176A6B8FFF63 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				798896CC2FAF6F4F006EC547 /* SamplerAudioEngine 2.swift */,
 				FCE73E660519319B2B9062E7 /* PianoAudioProtocol.swift */,
 				8F002B5089588938A7DF0BAA /* SineAudioEngine.swift */,
+				AD11AAAA11AAAA11AAAA1100 /* VelocityDetector.swift */,
+				BE22BBBB22BBBB22BBBB2200 /* HapticEngine.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -45,6 +64,7 @@
 			children = (
 				F71ACB6FA0809E33380EA631 /* Piano */,
 				CA1071E00E14A10FF56DCDF8 /* Products */,
+				798896CF2FAF6FD9006EC547 /* Resources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +122,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B8B2764A3D2AF9098878B88 /* Build configuration list for PBXNativeTarget "Piano" */;
 			buildPhases = (
+				C7D5E3F7A4B7C0D1E2F3A4B5 /* Resources */,
 				055C4E659082F8CDCC4817DA /* Sources */,
 			);
 			buildRules = (
@@ -123,8 +144,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = 1417E68B2F9F27F19500F3A8 /* Build configuration list for PBXProject "Piano" */;
 			developmentRegion = en;
@@ -145,6 +164,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		C7D5E3F7A4B7C0D1E2F3A4B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9B3C7D1E5F2A0B1C2D3E4F5 /* GeneralUser_GS.sf2 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		055C4E659082F8CDCC4817DA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -153,11 +183,14 @@
 				CB6540D7E1F8D0196F62D540 /* Pad.swift in Sources */,
 				BFB6A329350569B8A140661A /* PadView.swift in Sources */,
 				3B759AB4CFB1A94749592B54 /* PianoApp.swift in Sources */,
+				798896CD2FAF6F4F006EC547 /* SamplerAudioEngine 2.swift in Sources */,
 				79DA514E46683AE275A60102 /* PianoAudioProtocol.swift in Sources */,
 				0B15706CEE2B5463CB803F61 /* PianoView.swift in Sources */,
 				537685112A54AD51BD393E80 /* PianoViewModel.swift in Sources */,
 				A37668B4AAE4919829F4732D /* SineAudioEngine.swift in Sources */,
 				B3192BD83F3E04934F783678 /* TouchOverlayView.swift in Sources */,
+				AD11AAAA11AAAA11AAAA1101 /* VelocityDetector.swift in Sources */,
+				BE22BBBB22BBBB22BBBB2201 /* HapticEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +242,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -226,8 +259,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = TFFVHWZ4UN;
 				INFOPLIST_FILE = Piano/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -243,8 +277,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = TFFVHWZ4UN;
 				INFOPLIST_FILE = Piano/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,7 +341,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

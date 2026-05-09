@@ -53,7 +53,6 @@ final class PianoTouchUIView: UIView {
     var padRadius: CGFloat = 44
     weak var delegate: PianoTouchDelegate?
 
-    // touch → (padIndex, initialPoint)
     private var activeTouches: [UITouch: (index: Int, origin: CGPoint)] = [:]
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -61,9 +60,7 @@ final class PianoTouchUIView: UIView {
             let pt = touch.location(in: self)
             guard let index = closestPad(to: pt) else { continue }
             activeTouches[touch] = (index, pt)
-            delegate?.touchBegan(padIndex: index,
-                                  touchId: touch.hash,
-                                  point: pt,
+            delegate?.touchBegan(padIndex: index, touchId: touch.hash, point: pt,
                                   majorRadius: touch.majorRadius)
         }
     }
@@ -72,10 +69,8 @@ final class PianoTouchUIView: UIView {
         for touch in touches {
             guard let info = activeTouches[touch] else { continue }
             let pt = touch.location(in: self)
-            delegate?.touchMoved(padIndex: info.index,
-                                  touchId: touch.hash,
-                                  current: pt,
-                                  origin: info.origin)
+            delegate?.touchMoved(padIndex: info.index, touchId: touch.hash,
+                                  current: pt, origin: info.origin)
         }
     }
 
@@ -97,8 +92,10 @@ final class PianoTouchUIView: UIView {
     private func closestPad(to point: CGPoint) -> Int? {
         var best: (index: Int, dist: CGFloat)?
         for (i, center) in padCenters.enumerated() {
+            guard abs(point.x - center.x) <= padRadius,
+                  abs(point.y - center.y) <= padRadius else { continue }
             let dist = hypot(point.x - center.x, point.y - center.y)
-            if dist <= padRadius, best == nil || dist < best!.dist {
+            if best == nil || dist < best!.dist {
                 best = (i, dist)
             }
         }

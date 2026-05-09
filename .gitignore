@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Xcode user-specific
+**/xcuserdata/
+**/xcshareddata/
+*.xcuserstate
+*.xcuserdatad/
+
+# Swift / Xcode build artifacts
+build/
+DerivedData/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+.swiftpm/
+
+# CocoaPods / Carthage (just in case)
+Pods/
+Carthage/Build/
+
+# SoundFonts — too large for git, fetch separately
+*.sf2
+*.sf3

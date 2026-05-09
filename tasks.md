@@ -6,36 +6,39 @@
 ---
 
 ## Phase 0：專案初始化
-- [ ] 0.1 用 Xcode 建立新專案 `Piano`，SwiftUI App、iOS 16+、Swift 5.9+
-- [ ] 0.2 設定 Bundle ID、簽章
-- [ ] 0.3 `Info.plist` **鎖定僅橫向** (`UISupportedInterfaceOrientations` 只留 `landscapeLeft` + `landscapeRight`)
-- [ ] 0.4 加入 `NSMicrophoneUsageDescription` (錄音用) 與 `NSMotionUsageDescription` (加速度計用)
-- [ ] 0.5 加入 `.gitignore`，初始化 git repo (已完成)
-- [ ] 0.6 建立資料夾結構：`Models/`, `Views/`, `ViewModels/`, `Services/`, `Resources/`
+- [x] 0.1 用 Xcode 建立新專案 `Piano`，SwiftUI App、iOS 16+、Swift 5.9+
+- [x] 0.2 設定 Bundle ID、簽章
+- [x] 0.3 `Info.plist` **鎖定僅橫向** (`UISupportedInterfaceOrientations` 只留 `landscapeLeft` + `landscapeRight`)
+- [x] 0.4 加入 `NSMicrophoneUsageDescription` (錄音用) 與 `NSMotionUsageDescription` (加速度計用)
+- [x] 0.5 加入 `.gitignore`，初始化 git repo
+- [x] 0.6 建立資料夾結構：`Models/`, `Views/`, `ViewModels/`, `Services/`, `Resources/`
 
 ## Phase 1：最小可彈奏 MVP
-- [ ] 1.1 下載並轉換 Salamander Grand Piano (lite 版) 為 `.sf2`，放入 `Resources/SoundFonts/`
-- [ ] 1.2 實作 `AudioEngine` (AVAudioEngine + AVAudioUnitSampler)
-  - 載入 SoundFont
-  - `noteOn(note, velocity)` / `noteOff(note)`
-  - 設定低延遲 buffer
-- [ ] 1.3 實作最簡 `PadView` (圓形按鈕，按下發聲、放開停聲)
-- [ ] 1.4 在 `PianoView` 排出 10 顆固定按鍵 (C 大調 1 個八度 ± 1 音)
-- [ ] 1.5 實機測試延遲與多點觸控
-- [ ] **里程碑**：能用 10 顆按鍵彈出鋼琴音
+- [x] 1.0 (過渡) 先以 `SineAudioEngine` 出聲（commit f81b159）— 確認觸控/多指/pitch bend 流程，但音色像電子噪音
+- [x] 1.1 取得 SoundFont 並放入 `Resources/SoundFonts/`
+  - 改用 **GeneralUser GS v1.471**（30MB，授權允許商用與重新散布，比 Salamander lite 安全）
+  - 已下載到 `Piano/Resources/SoundFonts/GeneralUser_GS.sf2` + license 檔
+  - ✅ 已在 Xcode 加入 `Piano` target
+- [x] 1.2 實作 `SamplerAudioEngine` (AVAudioEngine + AVAudioUnitSampler)
+  - 載入 SoundFont（program 0 = Acoustic Grand Piano）
+  - 實作 `PianoAudioEngine` protocol：`noteOn` / `noteOff` / `pitchBend`
+  - `PianoViewModel.init()` 偵測 SF2 是否打包，沒有就 fallback 到 `SineAudioEngine`
+  - 設定低延遲 buffer (5ms)
+  - ⚠️ 待辦：在 Xcode 把 `SamplerAudioEngine.swift` 拖進 Project Navigator（加入 `Piano` target）
+- [x] 1.3 實作最簡 `PadView` (圓形按鈕，按下發聲、放開停聲)
+- [x] 1.4 在 `PianoView` 排出 10 顆固定按鍵 (C 大調 1 個八度 ± 1 音)
+- [x] 1.5 實機測試延遲與多點觸控（換成 sampler 後重測）
+- [x] **里程碑**：能用 10 顆按鍵彈出真實鋼琴音色，持續按住有自然 sustain，放開有 release tail
 
-## Phase 2：表現力 — 力度 + 推弦 + 觸覺
+## Phase 2：表現力 — 力度 + 推弦 + 觸覺 
 - [ ] 2.1 用 `UIViewRepresentable` 包 `UIView` 取得 `UITouch.majorRadius` (B 來源)
 - [ ] 2.2 實作 `VelocityDetector`：CMMotionManager 100Hz 取樣，計算 50ms 峰值 (A 來源)
-- [ ] 2.3 情境偵測：手持 vs 平放，自動切換 A/B 主來源
-- [ ] 2.4 校準流程 `CalibrationView`：輕敲 3 次 + 重敲 3 次 → 線性映射
-- [ ] 2.5 校準結果存 `UserDefaults`，設定頁可重新校準
-- [ ] 2.6 力度映射 → MIDI velocity (30–127)
-- [ ] 2.7 推弦偵測：垂直拖曳 → pitch bend MIDI 訊息
-- [ ] 2.8 多指獨立 channel 分配機制 (每指最多 5 ch)
+- [ ] 2.6 力度映射 → MIDI velocity (30–127)：A/B 固定權重合成，不做校準
+- [x] 2.7 推弦偵測：垂直拖曳 → pitch bend MIDI 訊息
+- [x] 2.8 多指獨立 channel 分配機制 (每指最多 5 ch)
 - [ ] 2.9 實作 `HapticEngine` (Core Haptics)：tap + continuous
 - [ ] 2.10 按下時觸發震動，強度跟隨 velocity
-- [ ] 2.11 推弦時的視覺回饋 (上下箭頭 / 數字)
+- [x] 2.11 推弦時的視覺回饋 (上下箭頭 / 數字)
 - [ ] **里程碑**：可推弦、力度有 pp/mf/ff 三段感、震動有感
 
 ## Phase 3：自訂與 Preset
