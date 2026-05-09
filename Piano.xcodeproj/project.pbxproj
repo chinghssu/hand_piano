@@ -15,6 +15,11 @@
 		A37668B4AAE4919829F4732D /* SineAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F002B5089588938A7DF0BAA /* SineAudioEngine.swift */; };
 		AD11AAAA11AAAA11AAAA1101 /* VelocityDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11AAAA11AAAA11AAAA1100 /* VelocityDetector.swift */; };
 		BE22BBBB22BBBB22BBBB2201 /* HapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE22BBBB22BBBB22BBBB2200 /* HapticEngine.swift */; };
+		CE33CCCC33CCCC33CCCC3301 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33CCCC33CCCC33CCCC3300 /* Preset.swift */; };
+		DE44DDDD44DDDD44DDDD4401 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE44DDDD44DDDD44DDDD4400 /* PresetStore.swift */; };
+		EE55EEEE55EEEE55EEEE5501 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE55EEEE55EEEE55EEEE5500 /* SettingsStore.swift */; };
+		FA66FFFF66FFFF66FFFF6601 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA66FFFF66FFFF66FFFF6600 /* SettingsView.swift */; };
+		AB77AAAA77AAAA77AAAA7701 /* PresetMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB77AAAA77AAAA77AAAA7700 /* PresetMenuView.swift */; };
 		A9B3C7D1E5F2A0B1C2D3E4F5 /* GeneralUser_GS.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = B8C4D2E6F3A8B0C1D2E3F4A5 /* GeneralUser_GS.sf2 */; };
 		B3192BD83F3E04934F783678 /* TouchOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB88A11DF1D88BB77CB48F0 /* TouchOverlayView.swift */; };
 		BFB6A329350569B8A140661A /* PadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C01E27415DFB577E66089A /* PadView.swift */; };
@@ -31,6 +36,11 @@
 		8F002B5089588938A7DF0BAA /* SineAudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SineAudioEngine.swift; sourceTree = "<group>"; };
 		AD11AAAA11AAAA11AAAA1100 /* VelocityDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VelocityDetector.swift; sourceTree = "<group>"; };
 		BE22BBBB22BBBB22BBBB2200 /* HapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticEngine.swift; sourceTree = "<group>"; };
+		CE33CCCC33CCCC33CCCC3300 /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		DE44DDDD44DDDD44DDDD4400 /* PresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStore.swift; sourceTree = "<group>"; };
+		EE55EEEE55EEEE55EEEE5500 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		FA66FFFF66FFFF66FFFF6600 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AB77AAAA77AAAA77AAAA7700 /* PresetMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetMenuView.swift; sourceTree = "<group>"; };
 		9EB88A11DF1D88BB77CB48F0 /* TouchOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchOverlayView.swift; sourceTree = "<group>"; };
 		D9C01E27415DFB577E66089A /* PadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadView.swift; sourceTree = "<group>"; };
 		F5B4B2B0C609B47D04DBB2B5 /* Pad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
@@ -55,6 +65,8 @@
 				8F002B5089588938A7DF0BAA /* SineAudioEngine.swift */,
 				AD11AAAA11AAAA11AAAA1100 /* VelocityDetector.swift */,
 				BE22BBBB22BBBB22BBBB2200 /* HapticEngine.swift */,
+				DE44DDDD44DDDD44DDDD4400 /* PresetStore.swift */,
+				EE55EEEE55EEEE55EEEE5500 /* SettingsStore.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -72,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				F5B4B2B0C609B47D04DBB2B5 /* Pad.swift */,
+				CE33CCCC33CCCC33CCCC3300 /* Preset.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -98,6 +111,8 @@
 				D9C01E27415DFB577E66089A /* PadView.swift */,
 				65B4A58452A757CEB9404849 /* PianoView.swift */,
 				9EB88A11DF1D88BB77CB48F0 /* TouchOverlayView.swift */,
+				FA66FFFF66FFFF66FFFF6600 /* SettingsView.swift */,
+				AB77AAAA77AAAA77AAAA7700 /* PresetMenuView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -191,6 +206,11 @@
 				B3192BD83F3E04934F783678 /* TouchOverlayView.swift in Sources */,
 				AD11AAAA11AAAA11AAAA1101 /* VelocityDetector.swift in Sources */,
 				BE22BBBB22BBBB22BBBB2201 /* HapticEngine.swift in Sources */,
+				CE33CCCC33CCCC33CCCC3301 /* Preset.swift in Sources */,
+				DE44DDDD44DDDD44DDDD4401 /* PresetStore.swift in Sources */,
+				EE55EEEE55EEEE55EEEE5501 /* SettingsStore.swift in Sources */,
+				FA66FFFF66FFFF66FFFF6601 /* SettingsView.swift in Sources */,
+				AB77AAAA77AAAA77AAAA7701 /* PresetMenuView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

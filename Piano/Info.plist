@@ -24,6 +24,8 @@
 	<string>錄製您的演奏</string>
 	<key>NSMotionUsageDescription</key>
 	<string>偵測敲擊力道，以調整音量強弱</string>
+	<key>UILaunchScreen</key>
+	<dict/>
 	<key>UIRequiresFullScreen</key>
 	<true/>
 	<key>UIStatusBarHidden</key>

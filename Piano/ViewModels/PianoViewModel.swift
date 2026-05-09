@@ -1,17 +1,23 @@
 import Foundation
 import SwiftUI
+import Combine
 
 final class PianoViewModel: ObservableObject {
 
-    @Published var pads: [Pad] = Pad.cMajorDefault
+    @Published var pads: [Pad] = []
 
+    let presetStore: PresetStore
+    private let settings = SettingsStore.shared
     private let audio: PianoAudioEngine
     private var fingerChannelMap: [Int: UInt8] = [:]
     private var availableChannels: Set<UInt8> = [0, 1, 2, 3, 4]
     private var isSustainActive = false
     private var sustainedNotes: [UInt8: UInt8] = [:]  // note → channel
+    private var cancellables: Set<AnyCancellable> = []
 
-    init() {
+    init(presetStore: PresetStore = PresetStore()) {
+        self.presetStore = presetStore
+
         let hasSF2 = Bundle.main.url(forResource: "GeneralUser_GS", withExtension: "sf2") != nil
         if hasSF2 {
             let engine = SamplerAudioEngine()
@@ -23,6 +29,39 @@ final class PianoViewModel: ObservableObject {
             try? engine.start()
         }
         VelocityDetector.shared.start()
+
+        pads = presetStore.current.pads
+        // 切換 preset 時：停掉所有發聲，重新載入 pads
+        presetStore.$currentID
+            .dropFirst()
+            .sink { [weak self] _ in self?.handlePresetChange() }
+            .store(in: &cancellables)
+        // 編輯 preset (例如新增/刪除 pad) 時，把 pads 同步過來
+        presetStore.$presets
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.pads = self.presetStore.current.pads
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handlePresetChange() {
+        // 停掉所有正在發聲的音
+        for ch in 0..<5 {
+            for note in 0..<128 {
+                audio.noteOff(note: UInt8(note), channel: UInt8(ch))
+            }
+        }
+        sustainedNotes.removeAll()
+        fingerChannelMap.removeAll()
+        availableChannels = [0, 1, 2, 3, 4]
+        pads = presetStore.current.pads
+    }
+
+    /// 編輯模式下儲存目前 pads 進 preset
+    func savePadsToPreset() {
+        presetStore.updateCurrentPads(pads)
     }
 
     // MARK: - Touch events
@@ -32,18 +71,25 @@ final class PianoViewModel: ObservableObject {
         sustainedNotes.removeValue(forKey: pad.midiNote)
         let velocity = computeVelocity(majorRadius: majorRadius)
         audio.noteOn(note: pad.midiNote, velocity: velocity, channel: ch)
-        let intensity = Float(Double(velocity - 30) / 97.0)
-        HapticEngine.shared.tap(intensity: max(0.2, intensity))
+        let intensity = Float(Double(velocity - 30) / 97.0) * Float(settings.hapticIntensity)
+        HapticEngine.shared.tap(intensity: max(0.05, intensity))
     }
 
     /// 合成 A (加速度峰值) + B (觸碰半徑) → MIDI velocity 30...127
-    /// 加速度為主 (0.7)，半徑為輔 (0.3)；不做情境偵測或校準。
+    /// 來源 / 曲線依 SettingsStore；不做情境偵測或校準。
     private func computeVelocity(majorRadius: CGFloat) -> UInt8 {
-        let accelNorm = VelocityDetector.shared.currentPeak()  // 0...1
-        // 經驗值：手指肉墊 majorRadius 約 8...28 點
+        let accelNorm = VelocityDetector.shared.currentPeak()
         let radiusNorm = max(0.0, min(1.0, (Double(majorRadius) - 8.0) / 20.0))
-        let combined = 0.7 * accelNorm + 0.3 * radiusNorm
-        let mapped = 30.0 + combined * 97.0
+
+        let raw: Double
+        switch settings.velocityMode {
+        case .auto:          raw = 0.7 * accelNorm + 0.3 * radiusNorm
+        case .accelerometer: raw = accelNorm
+        case .radius:        raw = radiusNorm
+        case .fixed:         raw = (100.0 - 30.0) / 97.0
+        }
+        let shaped = settings.velocityCurve.apply(raw)
+        let mapped = 30.0 + shaped * 97.0
         return UInt8(max(30.0, min(127.0, mapped)))
     }
 
@@ -58,10 +104,15 @@ final class PianoViewModel: ObservableObject {
     }
 
     func updatePitchBend(semitones: Double, touchId: Int) {
-        let clamped = max(-2.0, min(2.0, semitones))
-        let midiValue = UInt16(8192.0 + clamped / 2.0 * 8191.0)
+        let maxBend = settings.bendMaxSemitones
+        let clamped = max(-maxBend, min(maxBend, semitones))
+        let normalized = clamped / maxBend  // -1...1
+        let midiValue = UInt16(8192.0 + normalized * 8191.0)
         audio.pitchBend(value: midiValue, channel: channel(for: touchId))
     }
+
+    var bendSensitivity: Double { settings.bendSensitivity }
+    var bendMaxSemitones: Double { settings.bendMaxSemitones }
 
     // MARK: - Sustain
 
